@@ -1,6 +1,41 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import "primevue/resources/themes/saga-blue/theme.css";
+import "primevue/resources/primevue.min.css";
+import "primeicons/primeicons.css";
+import "primevue/resources/themes/bootstrap4-light-blue/theme.css";
+import "/node_modules/primeflex/primeflex.css";
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store';
+import PrimeVue from "primevue/config";
+import MenuBar from "primevue/menubar";
+import Button from "primevue/button";
+import Galleria from 'primevue/galleria';
+import Card from 'primevue/card';
+import Image from 'primevue/image';
+import Avatar from "primevue/avatar";
+import Menu from "primevue/menu";
+import InputText from "primevue/inputtext";
+import Password from "primevue/password";
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Skeleton from 'primevue/skeleton';
 
-createApp(App).use(store).use(router).mount('#app')
+const app = createApp(App);
+app.use(store);
+app.use(router);
+app.use(PrimeVue);
+app.component('Menubar',MenuBar);
+app.component('Button', Button);
+app.component('Galleria', Galleria);
+app.component('Card', Card);
+app.component('Image', Image);
+app.component('Avatar', Avatar);
+app.component('Menu', Menu);
+app.component('InputText', InputText);
+app.component('Password', Password);
+app.component('DataTable', DataTable);
+app.component('Column', Column);
+app.component('Skeleton', Skeleton);
+
+app.mount('#app');
