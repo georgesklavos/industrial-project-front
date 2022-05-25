@@ -20,11 +20,19 @@ import Password from "primevue/password";
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Skeleton from 'primevue/skeleton';
+import Toast from 'primevue/toast';
+import ToastService from 'primevue/toastservice';
+import Chip from 'primevue/chip';
+import Calendar from 'primevue/calendar';
+import Textarea from 'primevue/textarea';
+import Chips from 'primevue/chips';
+import FileUpload from 'primevue/fileupload';
 
 const app = createApp(App);
 app.use(store);
 app.use(router);
 app.use(PrimeVue);
+app.use(ToastService);
 app.component('Menubar',MenuBar);
 app.component('Button', Button);
 app.component('Galleria', Galleria);
@@ -37,5 +45,14 @@ app.component('Password', Password);
 app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('Skeleton', Skeleton);
+app.component("Toast", Toast);
+app.component("Chip", Chip);
+app.component("Calendar", Calendar);
+app.component("Textarea", Textarea);
+app.component("Chips",Chips);
+app.component("FileUpload", FileUpload);
+
 
 app.mount('#app');
+
+export {app};

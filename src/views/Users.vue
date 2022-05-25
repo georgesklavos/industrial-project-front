@@ -1,12 +1,11 @@
 <template>
-    <div class="flex justify-content-end py-2 px-3 mb-5" style="background-color: #EFEFEF;">
-        <Button label="Logout" class="p-button-text" @click="logout" />
-    </div>
+
+    <NavBar></NavBar>
     <DataTable :value="users" :paginator="true" class="p-datatable-customers" :rows="10" dataKey="id" :rowHover="true"
         :loading="loading"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        :rowsPerPageOptions="[10, 25, 50]" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        responsiveLayout="scroll">
+        :rowsPerPageOptions="[10, 25, 50]"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" responsiveLayout="scroll">
         <template #header>
             <div class="flex justify-content-between align-items-center">
                 <h2 class="m-0">Users</h2>
@@ -19,16 +18,17 @@
         <template #empty>
             No users found.
         </template>
-        <Column field="name" header="Name">
-            <template #loading>
-
-
-            </template>
+        <Column field="_id" header="Name">
         </Column>
-        <Column field="lastName" header="Last name">
-            <template #loading>
-
-
+        <Column field="first_name" header="Name">
+        </Column>
+        <Column field="last_name" header="Last name">
+        </Column>
+        <Column field="email" header="Last name">
+        </Column>
+        <Column header="Actions">
+            <template #body="{data}">
+                <Button label="Activate" :disabled="data.role == 2"></Button>
             </template>
         </Column>
     </DataTable>
@@ -36,28 +36,30 @@
 </template>
 
 <script>
-
+import { mapGetters } from "vuex";
+import NavBar from "../components/NavBar.vue";
 export default {
     name: "Users",
+    components: {
+        NavBar
+    },
     data() {
         return {
             loading: false,
-            users: [
-                {
-                    name: "test",
-                    lastName: "test2"
-                },
-                {
-                    name: "test3",
-                    lastName: "test4"
-                }
-            ]
         }
     },
     method: {
         logout() {
             console.log('logout');
         }
+    },
+    computed: {
+        ...mapGetters(['users'])
+    },
+    async mounted() {
+        this.loading = true;
+        await this.$store.dispatch("users");
+        this.loading = false;
     }
 }
 </script>

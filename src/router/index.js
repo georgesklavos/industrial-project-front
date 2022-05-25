@@ -8,13 +8,7 @@ import Users from "../views/Users.vue";
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/profile',
-    name: "Profile",
-    component: Profile
+    redirect: 'login'
   },
   {
     path: '/login',
@@ -25,6 +19,16 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: Home
+  },
+  {
+    path: '/profile',
+    name: "profile",
+    component: Profile
   },
   {
     path: '/users',
