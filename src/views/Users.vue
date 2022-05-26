@@ -27,8 +27,14 @@
         <Column field="email" header="Last name">
         </Column>
         <Column header="Actions">
-            <template #body="{data}">
-                <Button label="Activate" :disabled="data.role == 2"></Button>
+            <template #body="{ data, index }">
+                <div class="flex justify-content-evenly">
+                    <Button label="Activate" :loading="loadingSave && loadingSaveIndex == index" iconPos="right"
+                        :disabled="data.role == 2" @click="activateUser(data, index)"></Button>
+                    <Button icon="pi pi-times" :loading="loadingDelete && loadingDeleteIndex == index"
+                        class="p-button-rounded p-button-danger p-button-outlined"
+                        @click="deleteUser(data, index)"></Button>
+                </div>
             </template>
         </Column>
     </DataTable>
@@ -46,21 +52,41 @@ export default {
     data() {
         return {
             loading: false,
-        }
-    },
-    method: {
-        logout() {
-            console.log('logout');
+            loadingSave: false,
+            loadingSaveIndex: null,
+            loadingDelete: false,
+            loadingDeleteIndex: null
         }
     },
     computed: {
         ...mapGetters(['users'])
     },
     async mounted() {
-        this.loading = true;
-        await this.$store.dispatch("users");
-        this.loading = false;
-    }
+        this.getUsers();
+    },
+    methods: {
+        async getUsers() {
+            this.loading = true;
+            await this.$store.dispatch("users");
+            this.loading = false;
+        },
+        async activateUser(user, index) {
+            this.loadingSave = true;
+            this.loadingSaveIndex = index;
+            await this.$store.dispatch('activateUser', user._id);
+            this.loadingSave = false;
+            this.loadingSaveIndex = null;
+            this.getUsers();
+        },
+        async deleteUser(user, index) {
+            this.loadingDelete = true;
+            this.loadingDeleteIndex = index;
+            await this.$store.dispatch('deleteUser', user._id);
+            this.loadingDelete = false;
+            this.loadingDeleteIndex = null;
+            this.getUsers();
+        },
+    },
 }
 </script>
 

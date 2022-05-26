@@ -9,29 +9,31 @@
                     <!-- Firstname field -->
                     <div class="field p-fluid">
                         <InputText v-model="data.firstName" type="text" placeholder="First name" />
-                             <div class="text-center p-0">
+                        <div class="text-center p-0">
                             <span v-if="v$.data.firstName.$error && submitted">
-                                <span id="firstName-error" v-for="(error, index) of v$.data.firstName.$errors" :key="index">
+                                <span id="firstName-error" v-for="(error, index) of v$.data.firstName.$errors"
+                                    :key="index">
                                     <small class="p-error">{{ error.$message }}</small>
                                 </span>
                             </span>
                         </div>
                     </div>
                     <!-- Lastname field -->
-                     <div class="field p-fluid">
-                         <InputText v-model="data.lastName" type="text" placeholder="Last name" />
-                             <div class="text-center p-0">
+                    <div class="field p-fluid">
+                        <InputText v-model="data.lastName" type="text" placeholder="Last name" />
+                        <div class="text-center p-0">
                             <span v-if="v$.data.lastName.$error && submitted">
-                                <span id="lastName-error" v-for="(error, index) of v$.data.lastName.$errors" :key="index">
+                                <span id="lastName-error" v-for="(error, index) of v$.data.lastName.$errors"
+                                    :key="index">
                                     <small class="p-error">{{ error.$message }}</small>
                                 </span>
                             </span>
                         </div>
                     </div>
                     <!-- Email field -->
-                     <div class="field p-fluid">
+                    <div class="field p-fluid">
                         <InputText v-model="data.email" type="text" placeholder="Email" />
-                             <div class="text-center p-0">
+                        <div class="text-center p-0">
                             <span v-if="v$.data.email.$error && submitted">
                                 <span id="email-error" v-for="(error, index) of v$.data.email.$errors" :key="index">
                                     <small class="p-error">{{ error.$message }}</small>
@@ -40,24 +42,35 @@
                         </div>
                     </div>
                     <!-- Password field -->
-                     <div class="field p-fluid">
-                         <Password v-model="data.password" toggleMask class="mb-2" placeholder="Password" :feedback="false" />
-                             <div class="text-center p-0">
+                    <div class="field p-fluid">
+                        <Password v-model="data.password" toggleMask class="mb-2" placeholder="Password"
+                            :feedback="false" />
+                        <div class="text-center p-0">
                             <span v-if="v$.data.password.$error && submitted">
-                                <span id="password-error" v-for="(error, index) of v$.data.password.$errors" :key="index">
+                                <span id="password-error" v-for="(error, index) of v$.data.password.$errors"
+                                    :key="index">
                                     <small class="p-error">{{ error.$message }}</small>
                                 </span>
                             </span>
                         </div>
                     </div>
-                   
-                    
-                   
+
+                    <!-- School field -->
+                    <div class="field p-fluid">
+                        <Dropdown v-model="data.school" :options="schools" placeholder="Select a school" />
+                        <div class="text-center p-0">
+                            <span v-if="v$.data.school.$error && submitted">
+                                <span id="school-error" v-for="(error, index) of v$.data.school.$errors" :key="index">
+                                    <small class="p-error">{{ error.$message }}</small>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </template>
             <template #footer>
                 <div class="flex justify-content-between">
-                    <Button label="Login" @click="$router.push({name: 'login'})" />
+                    <Button label="Login" @click="$router.push({ name: 'login' })" />
                     <Button label="Register" @click="register" />
                 </div>
             </template>
@@ -69,6 +82,7 @@
 <script>
 import { email, required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
+import { mapGetters } from "vuex";
 export default {
     setup: () => ({ v$: useVuelidate() }),
     name: "Register",
@@ -78,9 +92,13 @@ export default {
                 firstName: "",
                 lastName: "",
                 email: "",
-                password: ""
-            }
+                password: "",
+                school: ""
+            },
         }
+    },
+    computed: {
+        ...mapGetters(['schools'])
     },
     validations: {
         data: {
@@ -97,17 +115,20 @@ export default {
             password: {
                 required
             },
+            school: {
+                required
+            }
         }
     },
     methods: {
-       async register() {
+        async register() {
             this.submitted = true;
             const result = await this.v$.$validate();
-            if(result) {
+            if (result) {
                 this.loading = true;
                 this.$store.dispatch("register", this.data);
                 this.loading = false;
-                this.$router.push({name: 'login'});
+                this.$router.push({ name: 'login' });
             }
         }
     }

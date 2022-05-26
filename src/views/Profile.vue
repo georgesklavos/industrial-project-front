@@ -1,17 +1,26 @@
 <template>
     <NavBar></NavBar>
+    <div class="flex justify-content-end">
+        <Button label="Update profile" v-if="Object.keys(profileData).length > 0 && profileData._id == loggedIn._id"
+            @click="updateProfile" :loading="loading" iconPos="right" />
+    </div>
     <div class="grid">
-        <div class="col-12 md:col-6 flex justify-content-center">
+        <div class="col-12 md:col-6 flex flex-column justify-content-center align-items-center">
             <Card style="height: 20rem; width: 20rem;">
                 <template #content>
                     <div class="text-center">
                         <!-- <img style="width: 20rem !important;" class="h-full w-full" src="/logo.png"> -->
-                        <FileUpload style="width: 20rem; height: 20rem;" @upload="fileUploaded" mode="basic" name="image"
-                            :url="`https://alumni-softeng-api.herokuapp.com/api/upload?id=${profile._id}`" accept="image/*" :auto="true" chooseLabel=" " />
+                        <Image :src="profileData.img ? `data:image/png;base64,${profileData.img}` : '/no-image.png'" alt="Image" width="310" preview />
                     </div>
+
                 </template>
             </Card>
+            <FileUpload v-if="Object.keys(profileData).length > 0 && profileData._id == loggedIn._id"
+                style="width: 7rem; height: 3rem;" class="mt-5" @upload="fileUploaded" mode="basic" name="image"
+                :url="`https://alumni-softeng-api.herokuapp.com/api/upload?id=${profile._id}`" accept="image/*"
+                :auto="true" chooseLabel="Upload" />
         </div>
+
         <div class="col-12 md:col-6">
             <div class="grid flex-column">
                 <div class="col-12">
@@ -28,11 +37,11 @@
                                 class="align-self-center ml-2">{{ profileData.grad_date
                                 }}</span>
                             <Calendar v-else-if="profileData._id == loggedIn._id" id="basic"
-                                v-model="profileData.grad_date" autocomplete="off" class="ml-2" />
+                                v-model="profileData.grad_date" autocomplete="off" class="ml-2" dateFormat='dd-mm-yy' />
                             <span v-else class="align-self-center ml-2">N/A</span>
                         </div>
 
-                        <div class="flex">
+                        <div class="flex mt-3">
                             <span class="pl-2 text-xl m-0 align-self-center">Degree: </span>
                             <span v-if="profileData.degree && profileData._id != loggedIn._id"
                                 class="align-self-center ml-2">{{ profileData.degree
@@ -77,8 +86,8 @@
                 </div>
             </div>
         </div>
-
     </div>
+
 
 </template>
 
@@ -93,7 +102,8 @@ export default {
     },
     data() {
         return {
-            profileData: {}
+            profileData: {},
+            loading: false
         }
     },
     computed: {
@@ -108,8 +118,16 @@ export default {
         }
     },
     methods: {
-        fileUploaded() {
-
+        fileUploaded(value) {
+            this.$store.commit('profile', JSON.parse(value.xhr.response));
+        },
+        async updateProfile() {
+            this.loading = true;
+            console.log(this.profileData);
+           this.profileData.grad_date = this.$dayjs(this.profileData.grad_date).format('DD-MM-YYYY');
+        // this.profileData.grad_date = this.$dayjs(this.profileData.grad_date,'DD-MM-YYYY').format('DD-MM-YYYY');
+            await this.$store.dispatch('updateUser', this.profileData);
+            this.loading = false;
         }
     }
 }
@@ -123,14 +141,6 @@ export default {
     .p-card-content {
         padding: 0;
         height: 100%;
-    }
-}
-
-::v-deep(.p-fileupload-choose) {
-    .p-button-icon {
-        text-align: center;
-        font-size: 60px !important;
-        width: 100% !important;
     }
 }
 </style>

@@ -27,12 +27,18 @@ import Calendar from 'primevue/calendar';
 import Textarea from 'primevue/textarea';
 import Chips from 'primevue/chips';
 import FileUpload from 'primevue/fileupload';
+import Dropdown from 'primevue/dropdown';
+import Inplace from 'primevue/inplace';
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
+import dayjs from "dayjs";
 
 const app = createApp(App);
 app.use(store);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
+app.config.globalProperties.$dayjs = dayjs;
 app.component('Menubar',MenuBar);
 app.component('Button', Button);
 app.component('Galleria', Galleria);
@@ -51,6 +57,10 @@ app.component("Calendar", Calendar);
 app.component("Textarea", Textarea);
 app.component("Chips",Chips);
 app.component("FileUpload", FileUpload);
+app.component("Dropdown", Dropdown);
+app.component("Inplace", Inplace);
+app.component("TabView", TabView);
+app.component("TabPanel", TabPanel);
 
 
 app.mount('#app');

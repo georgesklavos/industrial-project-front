@@ -1,9 +1,11 @@
-import axios from 'axios'
-import { createStore } from 'vuex'
-import {app} from "../main";
+import axios from "axios";
+import { createStore } from "vuex";
+import { app } from "../main";
 
 axios.defaults.baseURL = "https://alumni-softeng-api.herokuapp.com/api/";
-axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem(
+  "token"
+)}`;
 
 axios.interceptors.response.use(
   (res) => res,
@@ -21,7 +23,13 @@ export default createStore({
     loggedIn: {},
     user: [],
     alumni: [],
-    profile: {}
+    profile: {},
+    schools: [
+      "Computer Science",
+      "Business School",
+      "Engineering Shcool",
+      "Psychology Shcool"
+  ]
   },
   getters: {
     loggedIn(state) {
@@ -35,6 +43,9 @@ export default createStore({
     },
     profile(state) {
       return state.profile;
+    },
+    schools(state) {
+      return state.schools;
     }
   },
   mutations: {
@@ -53,29 +64,42 @@ export default createStore({
   },
   actions: {
     async login(context, data) {
-      await axios.post('login', data).then((res) => {
+      await axios.post("login", data).then((res) => {
         console.log(res);
-        context.commit('loggedIn', res.data);
+        context.commit("loggedIn", res.data);
         // localStorage.setItem('token')
-      })
+      });
     },
     async register(context, data) {
-      await axios.post('register', data);
+      await axios.post("register", data);
     },
     async users(context) {
-      await axios.get('users').then((res) => {
-        context.commit('users', res.data);
-      })
+      await axios.get("users").then((res) => {
+        context.commit("users", res.data);
+      });
     },
     async alumni(context) {
-      await axios.get('users?role=2').then((res) => {
-        context.commit('alumni', res.data);
-      })
+      await axios.get("users?role=2").then((res) => {
+        context.commit("alumni", res.data);
+      });
     },
     async profile(context) {
-      await axios.get('profile').then((res) => {
+      await axios.get("profile").then((res) => {
+        context.commit("profile", res.data);
+      });
+    },
+    async deleteUser(context, userId) {
+      await axios.delete(`users/delete`, { data: { id: userId } });
+    },
+    async activateUser(context, userId) {
+      await axios.post(`admin/users`, { id: userId });
+    },
+    async updateUser(context, data) {
+      data.id = data._id;
+      await axios.put(`users/update`, data).then((res) => {
+        context.commit('loggedIn', res.data);
         context.commit('profile', res.data);
       })
     }
-  }
-})
+  },
+});
