@@ -10,6 +10,6 @@
   
   body {
     margin: 0;
-    padding: 8px
+    padding: 8px;
   }
 </style>
