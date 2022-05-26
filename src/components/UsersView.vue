@@ -3,12 +3,12 @@
     <div class="grid">
         <template v-if="loading">
 
-            <div class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-2" v-for="index in 12" :key="index">
+            <div class="col-12 md:col-4 lg:col-3 xl:col-2" v-for="index in 12" :key="index">
                 <Skeleton style="height: 20rem;" class="px-3"></Skeleton>
             </div>
         </template>
-        <template v-else class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-2" v-for="(user, index) in users" :key="index">
-            <div class="px-3">
+        <template v-else class="col-12 md:col-4 lg:col-3 xl:col-2" v-for="(user, index) in users" :key="index">
+            <div class="p-3">
                 <div class="p-card cursor-pointer" style="height: 20rem;" @click="viewProfile(user)">
                     <div class="img-wrapper">
                         <img class="h-full w-full blur" :src="user.img ? `data:image/png;base64,${user.img}` : '/no-image.png'">
