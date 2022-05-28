@@ -9,9 +9,10 @@
         </template>
         <template v-else class="col-12 md:col-4 lg:col-3 xl:col-2" v-for="(user, index) in users" :key="index">
             <div class="p-3">
-                <div class="p-card cursor-pointer" style="height: 20rem;" @click="viewProfile(user)">
+                <div class="p-card" :class="Object.keys(loggedIn).length > 0 ? 'cursor-pointer' : ''" style="height: 20rem;" @click="Object.keys(loggedIn).length > 0 ? viewProfile(user) : ''">
                     <div class="img-wrapper">
-                        <img class="h-full w-full blur" :src="user.img ? `data:image/png;base64,${user.img}` : '/no-image.png'">
+                        <img class="h-full w-full blur"
+                            :src="user.img ? `data:image/png;base64,${user.img}` : '/no-image.png'">
                         <div class="content slide-left">{{ user.first_name }} {{ user.last_name }}</div>
                     </div>
                 </div>
@@ -22,7 +23,7 @@
 </template>
 
 <script>
-
+import { mapGetters } from 'vuex';
 export default {
     name: "Users view",
     data() {
@@ -31,6 +32,9 @@ export default {
         }
     },
     props: ['users', 'loading'],
+    computed: {
+        ...mapGetters(['loggedIn'])
+    },
     methods: {
         viewProfile(user) {
             this.$store.commit('profile', user);
