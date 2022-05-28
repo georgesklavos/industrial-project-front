@@ -8,10 +8,10 @@
                 <div class="flex flex-column">
                     <!-- Firstname field -->
                     <div class="field p-fluid">
-                        <InputText v-model="data.firstName" type="text" placeholder="First name" />
+                        <InputText v-model="data.first_name" type="text" placeholder="First name" />
                         <div class="text-center p-0">
-                            <span v-if="v$.data.firstName.$error && submitted">
-                                <span id="firstName-error" v-for="(error, index) of v$.data.firstName.$errors"
+                            <span v-if="v$.data.first_name.$error && submitted">
+                                <span id="firstName-error" v-for="(error, index) of v$.data.first_name.$errors"
                                     :key="index">
                                     <small class="p-error">{{ error.$message }}</small>
                                 </span>
@@ -20,10 +20,10 @@
                     </div>
                     <!-- Lastname field -->
                     <div class="field p-fluid">
-                        <InputText v-model="data.lastName" type="text" placeholder="Last name" />
+                        <InputText v-model="data.last_name" type="text" placeholder="Last name" />
                         <div class="text-center p-0">
-                            <span v-if="v$.data.lastName.$error && submitted">
-                                <span id="lastName-error" v-for="(error, index) of v$.data.lastName.$errors"
+                            <span v-if="v$.data.last_name.$error && submitted">
+                                <span id="lastName-error" v-for="(error, index) of v$.data.last_name.$errors"
                                     :key="index">
                                     <small class="p-error">{{ error.$message }}</small>
                                 </span>
@@ -71,7 +71,7 @@
             <template #footer>
                 <div class="flex justify-content-between">
                     <Button label="Login" @click="$router.push({ name: 'login' })" />
-                    <Button label="Register" @click="register" />
+                    <Button label="Register" @click="register" :loading="loading" iconPos="right"/>
                 </div>
             </template>
         </Card>
@@ -89,12 +89,13 @@ export default {
     data() {
         return {
             data: {
-                firstName: "",
-                lastName: "",
+                first_name: "",
+                last_name: "",
                 email: "",
                 password: "",
                 school: ""
             },
+            loading: false
         }
     },
     computed: {
@@ -102,10 +103,10 @@ export default {
     },
     validations: {
         data: {
-            firstName: {
+            first_name: {
                 required
             },
-            lastName: {
+            last_name: {
                 required
             },
             email: {
@@ -126,7 +127,7 @@ export default {
             const result = await this.v$.$validate();
             if (result) {
                 this.loading = true;
-                this.$store.dispatch("register", this.data);
+                await this.$store.dispatch("register", this.data);
                 this.loading = false;
                 this.$router.push({ name: 'login' });
             }
