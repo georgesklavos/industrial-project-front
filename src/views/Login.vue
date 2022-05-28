@@ -1,7 +1,7 @@
 <template>
 
     <div class="flex justify-content-center align-items-center h-screen">
-        <Card style="width: 25vw;">
+        <Card style="width: 25rem;">
             <template #title>
                 Login
             </template>
@@ -38,9 +38,12 @@
                 </div>
             </template>
             <template #footer>
+                <div class="flex justify-content-center pb-4">
+                    <Button style="width: 50%;" label="Login" @click="login" :loading="loading" iconPos="right" />
+                </div>
                 <div class="flex justify-content-between">
                     <Button label="Continue as guest" @click="$router.push({ name: 'home' })" />
-                    <Button label="Login" @click="login" :loading="loading" iconPos="right" />
+                    <Button label="Register" @click="$router.push({ name: 'register' })" />
                 </div>
             </template>
         </Card>
@@ -98,3 +101,12 @@ export default {
 }
 
 </script>
+
+<style lang="scss" scoped>
+::v-deep(.p-card) {
+
+    .p-card-footer {
+        padding-top: 0;
+    }
+}
+</style>

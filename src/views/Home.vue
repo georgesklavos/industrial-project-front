@@ -19,17 +19,18 @@
     </Galleria>
   </div> -->
   <div class="flex align-items-center justify-content-center">
-    <span class="text-5xl underline font-bold">Our alumnis</span>
+    <span class="text-5xl underline font-bold">Mediterrenian College Alumni</span>
   </div>
 
   <TabView class="mt-5">
+      <TabPanel  header="All">
+      <UsersView :users="alumni" :loading="loading"></UsersView>
+    </TabPanel>
     <TabPanel v-for="(school, index) in schools" :key="index" :header="school">
       <UsersView :users="alumniUsers(school)" :loading="loading"></UsersView>
     </TabPanel>
 
-  <TabPanel  header="All">
-      <UsersView :users="alumni" :loading="loading"></UsersView>
-    </TabPanel>
+
 
   </TabView>
 </template>

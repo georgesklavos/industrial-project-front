@@ -81,19 +81,23 @@ export default {
     transition: 200ms ease-in-out;
 }
 
-.img-wrapper:hover>img.blur {
+img.blur {
     filter: blur(5px);
 }
 
 .img-wrapper:hover>img.blur {
-    filter: blur(5px);
+    filter: blur(0px);
+}
+
+.img-wrapper:hover>img.blur {
+    filter: blur(0px);
 }
 
 .img-wrapper>.content.slide-left {
-    transform: translateX(-100%);
+    transform: translateX(0);
 }
 
 .img-wrapper:hover>.content.slide-left {
-    transform: translateX(0);
+    transform: translateX(-100%);
 }
 </style>
